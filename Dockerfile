@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM ubuntu:latest
 
 LABEL VERSION=0.1
 
