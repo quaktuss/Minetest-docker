@@ -1,70 +1,25 @@
 #Instal Docker File & Docker compose
 #!/bin/bash
 
-# Fonction pour détecter la distribution Linux
-detect_distribution() {
-    if [ -f /etc/os-release ]; then
-        # freedesktop.org et systemd
-        . /etc/os-release
-        OS=$NAME
-        VER=$VERSION_ID
-    elif type lsb_release >/dev/null 2>&1; then
-        # linuxbase.org
-        OS=$(lsb_release -si)
-        VER=$(lsb_release -sr)
-    elif [ -f /etc/lsb-release ]; then
-        # Pour certaines versions de Debian/Ubuntu sans lsb_release
-        . /etc/lsb-release
-        OS=$DISTRIB_ID
-        VER=$DISTRIB_RELEASE
-    elif [ -f /etc/debian_version ]; then
-        # Ancien Debian/Ubuntu/etc.
-        OS=Debian
-        VER=$(cat /etc/debian_version)
-    else
-        # Système inconnu
-        OS=$(uname -s)
-        VER=$(uname -r)
-    fi
-}
+##### ECHO CUSTOM #####
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
 
-# Exécuter la fonction de détection
-detect_distribution
+if ! command -v docker &> /dev/null; then
+  echo "Docker n'est pas installé. Installation en cours..."
+  curl -fsSL https://get.docker.com -o get-docker.sh
+  sudo sh get-docker.sh
+  sudo usermod -aG docker $USER
+  rm get-docker.sh
+fi
 
-# Installation basée sur la distribution détectée
-case $OS in
-    Ubuntu|Debian)
-        sudo apt-get update -y
-        sudo apt-get install -y docker.io docker-compose
-        ;;
-    Fedora)
-        sudo dnf -y install docker docker-compose
-        sudo systemctl start docker
-        sudo systemctl enable docker
-        ;;
-    CentOS)
-        sudo yum update -y
-        sudo yum install -y yum-utils
-        sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-        sudo yum install -y docker-ce docker-compose
-        sudo systemctl start docker
-        sudo systemctl enable docker
-        ;;
-    *)
-        echo "Désolé, votre distribution ($OS) n'est pas prise en charge par ce script."
-        exit 1
-        ;;
-esac
-
-# Ajout de l'utilisateur au groupe docker
-sudo usermod -aG docker $USER
-
-# Activation de docker au démarrage
-sudo systemctl enable docker
-
-# Message de fin
-echo "Docker installé et configuré sur $OS"
-
+if ! command -v ssh &> /dev/null; then
+  echo "SSH n'est pas installé. Veuillez installer OpenSSH."
+  exit 1
+fi
 
 echo " Map : $1"
 
@@ -72,7 +27,8 @@ servername="downloaded-map"
 
 case $1 in 
     *.zip)
-        sudo unzip -d "$servername" -j "$1" 
+        echo "EXTRACTING..."
+        sudo unzip -qq -d "$servername" -j "$1" 
         ;;
     *.tar.gz)
         sudo mkdir $servername && tar xf $1 -C $servername --strip-components 1
@@ -88,4 +44,8 @@ case $1 in
         ;;
 esac
 
-docker build -t "minetest_v1.0.0" --build-arg SERVERNAME=$servername .
+docker build -t "minetest_server" --build-arg SERVERNAME=$servername .
+
+sudo rm -rf $servername
+
+docker run --name minetest_server -d -p 30000:30000/udp minetest_server
