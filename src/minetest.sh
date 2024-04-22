@@ -73,8 +73,8 @@ main() {
     color_echo $BLUE "📥 Downloading file: $1"
     extract_file $1
     color_echo $BLUE "🐳 Building Docker image..."
-    docker build -t "minetest_server" --build-arg SERVERNAME="downloaded-map" . > /dev/null
-    sudo rm -rf "downloaded-map"
+    docker build -t "minetest_server" --build-arg SERVERNAME=$servername . > /dev/null
+    sudo rm -rf $servername
     color_echo $GREEN "✅ Process completed successfully."
 }
 
