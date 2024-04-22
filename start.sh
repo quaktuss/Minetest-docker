@@ -68,21 +68,24 @@ echo "Docker installé et configuré sur $OS"
 
 echo " Map : $1"
 
-server-name="downloaded-map"
+servername="downloaded-map"
 
 case $1 in 
     *.zip)
-        sudo unzip "$1" -d "$server-name"
+        sudo unzip -d "$servername" -j "$1" 
         ;;
     *.tar.gz)
-        sudo mkdir $server-name && tar xf $1 -C $server-name --strip-components 1
+        sudo mkdir $servername && tar xf $1 -C $servername --strip-components 1
         ;;
     *.gz)
         sudo gzip -d "$1" 
         filename=$(basename "$1" .gz)
-        sudo mv "$filename" "$server-name"
+        sudo mv "$filename" "$servername"
         ;;
     *)
         echo "Please share a *.zip, *tar.gz, *.gz file"
+        exit 1
         ;;
 esac
+
+docker build -t "minetest_v1.0.0" --build-arg SERVERNAME=$servername .

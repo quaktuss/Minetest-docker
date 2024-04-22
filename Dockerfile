@@ -3,6 +3,7 @@ FROM ubuntu:20.04
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
+ARG SERVERNAME
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -41,9 +42,12 @@ WORKDIR /minetest
 RUN cmake . -DRUN_IN_PLACE=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
 RUN make -j$(nproc)
 
+# Add Minetest map 
+COPY ${SERVERNAME} /minetest/worlds/${SERVERNAME} 
+
 # Expose the default Minetest port
 EXPOSE 30000/udp
 
 # Set the entry point
 ENTRYPOINT ["./bin/minetestserver"]
-CMD ["--worldname", "world", "--gameid", "minetest_game"]
+CMD ["--worldname", "downloaded-map", "--gameid", "minetest_game"]
