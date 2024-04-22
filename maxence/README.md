@@ -16,4 +16,6 @@ Assurez-vous que vous disposez des éléments suivants avant d'utiliser ce scrip
 2. **Donner les autorisations d'exécution :** Assurez-vous que le script est exécutable en utilisant la commande suivante :
    ```bash
    chmod +x minetest.sh
-3. ** Lancer le script :** ./minetest.sh map.zip
+3. ** Lancer le script :**
+   ```bash
+   ./minetest.sh map.zip
