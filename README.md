@@ -4,7 +4,8 @@ This project lets you deploy a **Minetest** server using docker.
 
 Follow the steps below to use the script.
 
-## Prérequis
+Requirements
+-------------
 
 Make sure you have the following before using this script:
 
