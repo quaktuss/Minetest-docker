@@ -19,6 +19,7 @@ Getting started
     git clone https://github.com/quaktuss/Minetest-docker.git
 2. **Make sure the script is executable by using the following command:**
    ```bash
+   cd src/
    chmod +x start.sh
 3. **Run the script :**
    ```bash
