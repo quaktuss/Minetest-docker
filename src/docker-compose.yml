@@ -1,8 +1,5 @@
-version: '3.8'
+version: '3.9'
 
-volumes:
-  world:
-  
 services:
   minetest:
     container_name: minetest-server
@@ -11,5 +8,7 @@ services:
     ports:
       - 30000:30000/udp
     volumes:
-      - world:/minetest/worlds/
-    
+      - ./minetest-data/minetest-map:/minetest/worlds/minetest-map
+      - ./minetest-data/mods:/minetest/mods/
+      - ./minetest-data/texturespack:/minetest/textures/base/pack
+    command: ./bin/minetestserver --world /minetest/bin/../worlds/minetest-map --gameid minetest_game
