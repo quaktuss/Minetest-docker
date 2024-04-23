@@ -1,0 +1,15 @@
+version: '3.8'
+
+volumes:
+  world:
+  
+services:
+  minetest:
+    container_name: minetest-server
+    image: sayk/minetest-server:latest
+    restart: unless-stopped
+    ports:
+      - 30000:30000/udp
+    volumes:
+      - world:/minetest/worlds/
+    
