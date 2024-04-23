@@ -74,8 +74,11 @@ main() {
     extract_file $1
     color_echo $BLUE "🐳 Building Docker image..."
     docker build -t "minetest_server" --build-arg SERVERNAME=$servername . > /dev/null
-    sudo rm -rf $servername
+    sudo rm -rf src/$servername
     color_echo $GREEN "✅ Process completed successfully."
+    color_echo $GREEN "🚀 Server starting..."
+    docker run -d -p 30000:30000/udp minetest_server
+    color_echo $GREEN "✅ Server started ! You can play join at 0.0.0.0:30000"
 }
 
 # Execute main function
