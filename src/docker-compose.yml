@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   minetest:
     container_name: minetest-server
