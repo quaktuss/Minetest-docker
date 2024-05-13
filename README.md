@@ -1,4 +1,7 @@
+
+
 # Minetest Docker
+by Mathieu PHERON, Maxence LANCOSME & Maxime CAPARROS
 
 This project lets you deploy a **Minetest** server using docker.
 
