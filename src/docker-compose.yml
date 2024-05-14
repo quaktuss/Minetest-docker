@@ -9,4 +9,4 @@ services:
       - ./minetest-data/minetest-map:/minetest/worlds/minetest-map
       - ./minetest-data/mods:/minetest/mods/
       - ./minetest-data/texturespack:/minetest/textures/base/pack
-    command: ./bin/minetestserver --world /minetest/bin/../worlds/minetest-map --gameid minetest_game
+    command: --world /minetest/bin/../worlds/minetest-map --gameid minetest_game
